@@ -2,8 +2,8 @@
   <td
     class="table-cell"
     :class="[
-      `table-cell--${id}`, 
-      isEditing ? 'table-cell--editing' : '', 
+      `table-cell--${id}`,
+      isEditing ? 'table-cell--editing' : '',
       hoverIndex === index ? 'table-cell--hover' : ''
     ]"
     :title="value"
@@ -14,11 +14,11 @@
         v-model="newValue"
         @keyup.esc="$parent.cancelChanges(index)"
         @keyup.enter="$parent.saveChanges(index)"
-      >
+      />
     </template>
     <template v-else>
       <div class="label">{{ column }}</div>
-      <div class="value"><slot/></div>
+      <div class="value"><slot /></div>
     </template>
   </td>
 </template>
@@ -54,12 +54,13 @@ export default {
     saveEdit() {
       return {
         value: this.newValue,
+        oldValue: this.value,
         key: this.id
       };
     },
     cancelEdit() {
       this.reset();
-    },
+    }
   },
   mounted() {
     this.reset();
@@ -86,4 +87,3 @@ export default {
   }
 }
 </style>
-

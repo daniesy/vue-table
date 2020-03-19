@@ -2,15 +2,15 @@
   <table class="vue-table" :style="sizesStyle">
     <thead>
       <tr>
-        <slot/>
-        <column v-if="hasActions" min="auto" max="auto" hidden label="actions"/>
+        <slot />
+        <column v-if="hasActions" min="auto" max="auto" hidden label=" " />
       </tr>
     </thead>
     <tbody>
       <tr v-for="(item, index) in data" :key="item.id">
         <cell
           v-for="(column, order) in columnsToDisplay"
-          :id="column.id"        
+          :id="column.id"
           :index="index"
           :column="column.label"
           :order="order"
@@ -18,7 +18,8 @@
           :edit-mode="editingColumns[index] || false"
           :value="item[column.id]"
           :key="`${item.id}${column.id}`"
-        >{{ item[column.id] }}</cell>
+          >{{ item[column.id] }}</cell
+        >
         <actions
           :key="`${item.id}actions`"
           :index="index"
@@ -27,7 +28,7 @@
           :cancel-label="cancelLabel"
           :action-class="actionClass"
         >
-          <slot name="actions" :index="index"/>
+          <slot name="actions" :index="index" />
         </actions>
       </tr>
     </tbody>
@@ -75,14 +76,19 @@ export default {
       return `grid-template-columns: ${sizes}`;
     },
     hasActions() {
-      return this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0;
+      return (
+        this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0
+      );
     }
   },
   mounted() {
     this.columns = this.$children.filter(c => c.$options.name === "Column");
-    this.sizes = this.columns.map(c => ({ min: c.min, max: c.max }));
+    this.refreshSizes();
   },
   methods: {
+    refreshSizes() {
+      this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
+    },
     stopEdit(index) {
       this.$set(this.editingColumns, index, false);
     },
@@ -111,7 +117,7 @@ export default {
       this.columns.forEach(column => {
         column.isSorting = column.id === id && column.sortable;
       });
-      this.$emit('sort', id, direction);
+      this.$emit("sort", id, direction);
     }
   }
 };
@@ -119,13 +125,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
 table.vue-table {
   display: block;
   min-width: 100%;
   border-collapse: collapse;
   min-width: 100%;
-  border: 1px solid #EAEDF3;
+  border: 1px solid #eaedf3;
   box-sizing: border-box;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
@@ -141,7 +146,7 @@ table.vue-table {
     box-shadow: 0 0.5rem 2rem #d8dfed;
   }
   .table-column {
-    border-bottom: 1px solid #EAEDF3;
+    border-bottom: 1px solid #eaedf3;
     font-weight: bold;
   }
   tr {
@@ -151,13 +156,13 @@ table.vue-table {
       }
     }
 
-    &:nth-child(2n+1) {
+    &:nth-child(2n + 1) {
       td {
         background: rgba(212, 218, 226, 0.1);
       }
     }
 
-    th,
+    th .table-column-wrapper,
     td.table-cell {
       padding: 20px;
     }
@@ -171,23 +176,22 @@ table.vue-table {
 
       &.table-actions {
         padding: 0;
-      }  
+      }
       input {
         display: block;
         width: 100%;
-        background: #FFFFFF;
+        background: #ffffff;
         box-sizing: border-box;
         border-radius: 4px;
-        border: 1px solid #EAEDF3;
+        border: 1px solid #eaedf3;
         padding: 15px 15px;
         font-size: inherit;
         margin: 0;
       }
     }
     td.table-actions {
-      border-bottom: 1px solid #EAEDF3;
+      border-bottom: 1px solid #eaedf3;
     }
-
   }
   .table-actions {
     .table-action {
@@ -198,17 +202,17 @@ table.vue-table {
       font-size: inherit;
       text-transform: uppercase;
       &.table-action--primary {
-        color: #3366FF;
+        color: #3366ff;
         font-weight: 600;
       }
       &.table-action--secondary {
-        color: #9DA4AE;
+        color: #9da4ae;
       }
       &.table-action--success {
-        color: #33CC66;
+        color: #33cc66;
       }
       &.table-action--danger {
-        color: #FF3366;
+        color: #ff3366;
       }
     }
   }
