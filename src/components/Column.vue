@@ -17,7 +17,12 @@
         <i class="fas" :class="sortingClass" />
       </template>
     </div>
-    <div @mousedown="initResize" v-if="resizable" class="resize-handle" />
+    <div
+      @mousedown="initResize"
+      @dblclick="resetSize"
+      v-if="resizable"
+      class="resize-handle"
+    />
   </th>
 </template>
 <script>
@@ -86,6 +91,10 @@ export default {
       this.isResizing = false;
       window.removeEventListener("mousemove", this.onMouseMove);
       window.removeEventListener("mouseup", this.onMouseUp);
+    },
+    resetSize() {
+      this.currentMax = this.max;
+      this.$parent.refreshSizes();
     }
   },
   mounted() {
