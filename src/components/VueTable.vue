@@ -106,6 +106,12 @@ export default {
     cancelChanges(index) {
       this.stopEdit(index);
       this.editableCellsAtIndex(index).forEach(c => c.cancelEdit());
+    },
+    sort(id, direction) {
+      this.columns.forEach(column => {
+        column.isSorting = column.id === id && column.sortable;
+      });
+      this.$emit('sort', id, direction);
     }
   }
 };

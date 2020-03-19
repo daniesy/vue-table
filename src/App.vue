@@ -1,12 +1,12 @@
 f<template>
   <div id="app">
-    <vue-table :data="items" @update-item="updateItem">
-      <column id="first_name" label="First Name" editable sortable/>
-      <column id="last_name" label="Last Name" editable/>
+    <vue-table :data="items" @update-item="updateItem" @sort="sortTable">
+      <column id="first_name" label="First Name" editable sortable />
+      <column id="last_name" label="Last Name" editable sortable />
       <!-- <column id="email" label="Email"/>
       <column id="country" label="Country"/>
       <column id="address" label="Address"/>-->
-      <column id="iban" label="IBAN"/>
+      <column id="iban" label="IBAN" />
       <template #actions="{ index }">
         <action type="primary" edit>Edit</action>
         <action type="success" edit>Mark as fixed</action>
@@ -36,6 +36,30 @@ export default {
       data.forEach(item => {
         this.items[index][item.key] = item.value;
       });
+    },
+    sortTable(key, direction) {
+      const compareDesc = (a, b) => {
+        if (a[key] < b[key]) {
+          return 1;
+        }
+        if (a[key] > b[key]) {
+          return -1;
+        }
+        return 0;
+      };
+
+      const compareAsc = (a, b) => {
+        if (a[key] < b[key]) {
+          return -1;
+        }
+        if (a[key] > b[key]) {
+          return 1;
+        }
+        return 0;
+      };
+
+      const compare = direction === "asc" ? compareAsc : compareDesc;
+      this.items.sort(compare);
     }
   },
   data: () => ({

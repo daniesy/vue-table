@@ -1,6 +1,6 @@
 {
   "name": "@daniesy/vue-table",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "./dist/vuetable.common.js",
   "files": [
     "dist/*",

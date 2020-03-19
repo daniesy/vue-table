@@ -1,14 +1,24 @@
 <template>
   <th
+    @click="sort"
     :id="id"
     class="table-column table-cell"
-    :class="[id ? `table-cell--${id}` : '', hidden ? `table-column--hidden` : '', sotable ? `table-column--sortable` : '']">    
-    {{ label }}<i v-if="sortable" class="fas fa-sort"></i>
+    :class="[id ? `table-cell--${id}` : '', hidden ? `table-column--hidden` : '', sortable ? `table-column--sortable` : '']">    
+
+    {{ label }}
+    <template v-if="sortable">
+      <i class="fas" :class="sortingClass"></i>
+    </template>
+
   </th>
 </template>
 <script>
 export default {
   name: "Column",
+  data: () => ({
+    isSorting: false,
+    isSortingDesc: false,
+  }),
   props: {
     id: String,
     editable: Boolean,
@@ -30,6 +40,21 @@ export default {
     },
     text() {
       return this.hidden ? "&nbsp;" : this.label;
+    },
+    sortingClass() {
+      if (!this.isSorting) {
+        return "fa-sort";
+      }
+      if (this.isSortingDesc) {
+        return "fa-sort-down";
+      }
+      return "fa-sort-up";
+    },
+  },
+  methods: {
+    sort() {
+      this.isSortingDesc = this.isSorting ? !this.isSortingDesc : true;
+      this.$parent.sort(this.id, this.isSortingDesc ? 'desc' : 'asc');
     }
   }
 };
@@ -41,13 +66,15 @@ export default {
   position: sticky;
   top: 0;
   background: white;
-  display: flex;
-  justify-content: space-between;
-  &.table-column--sortable {
-    cursor: pointer;
-    &:hover {
-      background: rgba(212, 218, 226, 0.1);
-    }
+  &.table-column--sortable {  
+      user-select: none;
+      display: grid;
+      grid-template-columns: 1fr 10px;
+      align-items: center;    
+      cursor: pointer;
+      &:hover {
+        background: rgba(212, 218, 226, 0.1);
+      }
   }
 }
 </style>
