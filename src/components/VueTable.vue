@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <slot />
-        <column v-if="hasActions" min="auto" max="auto" hidden label=" " />
+        <column v-if="hasActions" min="auto" max="auto" hidden label="" />
       </tr>
     </thead>
     <tbody>

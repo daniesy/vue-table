@@ -104,12 +104,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-column {
+th.table-column {
   text-align: left;
   position: sticky;
   top: 0;
   background: white;
   display: flex;
+  height: calc(100% - 2px);
+
   &.table-column--sortable .table-column-wrapper {
     flex: 1;
     user-select: none;
@@ -117,6 +119,10 @@ export default {
     grid-template-columns: 1fr 10px;
     align-items: center;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
   }
   &:hover,
   &.table-column--resizing {
@@ -124,7 +130,9 @@ export default {
       width: 4px;
     }
   }
-  &:hover {
+  &.table-column--resizing,
+  &.table-column--sortable:hover,
+  &.table-column--resizable:hover {
     background: rgba(212, 218, 226, 0.2);
   }
   .resize-handle {
@@ -132,6 +140,14 @@ export default {
     width: 0;
     background: black;
     transition: width 0.4s;
+  }
+  &.table-column--resizing + th.table-column {
+    .resize-handle {
+      width: 0;
+    }
+    &:hover {
+      background: rgba(212, 218, 226, 0);
+    }
   }
 }
 </style>
