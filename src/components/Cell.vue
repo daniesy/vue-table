@@ -29,17 +29,20 @@ export default {
     newValue: ""
   }),
   props: {
+    item: Object,
     id: String,
     index: Number,
     hoverIndex: Number,
     order: Number,
     editableOrder: Number,
     column: String,
-    value: String,
     editable: Boolean,
     editMode: Boolean
   },
   computed: {
+    value() {
+      return this.item[this.id] || "";
+    },
     key() {
       return this.$vnode.key;
     },

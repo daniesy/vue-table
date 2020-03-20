@@ -8,18 +8,32 @@
     </thead>
     <tbody>
       <tr v-for="(item, index) in data" :key="item.id">
-        <cell
-          v-for="(column, order) in columnsToDisplay"
-          :id="column.id"
-          :index="index"
-          :column="column.label"
-          :order="order"
-          :editable="column.editable"
-          :edit-mode="editingColumns[index] || false"
-          :value="item[column.id]"
-          :key="`${item.id}${column.id}`"
-          >{{ item[column.id] }}</cell
-        >
+        <template v-for="(column, order) in columnsToDisplay">
+          <slot
+            :name="column.id"
+            :id="column.id"
+            :index="index"
+            :column="column.label"
+            :order="order"
+            :editable="column.editable"
+            :edit-mode="editingColumns[index] || false"
+            :item="item"
+          >
+            <cell
+              :name="column.id"
+              :id="column.id"
+              :index="index"
+              :column="column.label"
+              :order="order"
+              :editable="column.editable"
+              :edit-mode="editingColumns[index] || false"
+              :item="item"
+              :key="`${item.id}${column.id}`"
+            >
+              {{ item[column.id] }}
+            </cell>
+          </slot>
+        </template>
         <actions
           :key="`${item.id}actions`"
           :index="index"
@@ -135,6 +149,7 @@ table.vue-table {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
   font-size: 14px;
+  text-align: left;
   thead {
     display: none;
   }

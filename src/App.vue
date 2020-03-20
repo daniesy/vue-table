@@ -7,6 +7,11 @@ f<template>
       <column id="country" label="Country"/>
       <column id="address" label="Address"/>-->
       <column id="iban" label="IBAN" />
+      <template #first_name="{ item }">
+        <td class="table-cell">
+          {{ item.first_name }}<br /><small>{{ item.country }}</small>
+        </td>
+      </template>
       <template #actions="{ index }">
         <action type="primary" edit>Edit</action>
         <action type="success" edit>Mark as fixed</action>
