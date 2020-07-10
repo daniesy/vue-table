@@ -1,5 +1,5 @@
 <template>
-  <td class="table-actions">
+  <td class="table-cell table-actions">
     <template v-if="editMode">
       <action
         @click="$parent.saveChanges(index)"
@@ -38,10 +38,9 @@ export default {
 
 <style lang="scss" scoped>
 .table-actions {
-  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;
   @media only screen and (min-width: 768px) {
     justify-content: inherit;
   }

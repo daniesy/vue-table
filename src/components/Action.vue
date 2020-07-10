@@ -38,7 +38,31 @@ export default {
   min-width: 90px;
   text-align: center;
   outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: transparent;
+
+  letter-spacing: 0.4px;
+  font-size: inherit;
+  text-transform: uppercase;
   cursor: pointer;
+  &.table-action--primary {
+    color: #3366ff;
+    font-weight: 600;
+  }
+  &.table-action--secondary {
+    color: #9da4ae;
+  }
+  &.table-action--success {
+    color: #33cc66;
+  }
+  &.table-action--danger {
+    color: #ff3366;
+  }
+
 }
 </style>
 

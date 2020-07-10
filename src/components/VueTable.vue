@@ -139,11 +139,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+
 table.vue-table {
   display: block;
   min-width: 100%;
   border-collapse: collapse;
-  min-width: 100%;
   border: 1px solid #eaedf3;
   box-sizing: border-box;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
@@ -183,15 +183,14 @@ table.vue-table {
     }
 
     td.table-cell {
-      align-items: center;
+      min-height: 100%;
+      box-sizing: border-box;
+      // align-items: center;
 
       &.table-cell--editing {
         padding: 5px 20px;
       }
 
-      &.table-actions {
-        padding: 0;
-      }
       input {
         display: block;
         width: 100%;
@@ -206,29 +205,6 @@ table.vue-table {
     }
     td.table-actions {
       border-bottom: 1px solid #eaedf3;
-    }
-  }
-  .table-actions {
-    .table-action {
-      background: transparent;
-      border: transparent;
-      padding: 0.7em 0;
-      letter-spacing: 0.4px;
-      font-size: inherit;
-      text-transform: uppercase;
-      &.table-action--primary {
-        color: #3366ff;
-        font-weight: 600;
-      }
-      &.table-action--secondary {
-        color: #9da4ae;
-      }
-      &.table-action--success {
-        color: #33cc66;
-      }
-      &.table-action--danger {
-        color: #ff3366;
-      }
     }
   }
 
