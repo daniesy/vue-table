@@ -75,7 +75,11 @@ export default {
       default: "Cancel"
     },
     actionClass: String,
-    wrap: Boolean
+    wrap: Boolean,
+    id: {
+      type: String,
+      required: true,
+    }
   },
   data: () => ({
     columns: [],
@@ -98,10 +102,24 @@ export default {
   },
   mounted() {
     this.columns = this.$children.filter(c => c.$options.name === "Column");
-    this.refreshSizes();
+    this.loadSizes();    
   },
   methods: {
-    refreshSizes() {
+    saveSizes() {
+      // wait to finish updating
+      this.$nextTick(() => {
+        localStorage.setItem(`${this.id}-column-sizes`, JSON.stringify(this.sizes));
+      });
+    },
+    loadSizes() {
+      const sizes = localStorage.getItem(`${this.id}-column-sizes`);
+      if (sizes) { 
+        this.sizes = JSON.parse(sizes);
+      } else {
+        this.refreshSizes();
+      }
+    },
+    refreshSizes() {    
       this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
     },
     stopEdit(index) {
@@ -159,7 +177,7 @@ table.vue-table {
   font-size: 14px;
   text-align: left;
   color: var(--table-font-color);
-  
+
   &.vue-table--wrap {
     td,
     td * {

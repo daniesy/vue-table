@@ -91,7 +91,8 @@ export default {
       this.isResizing = false;
       window.removeEventListener("mousemove", this.onMouseMove);
       window.removeEventListener("mouseup", this.onMouseUp);
-    },
+      this.$parent.saveSizes();
+    },    
     resetSize() {
       this.currentMax = this.max;
       this.$parent.refreshSizes();
