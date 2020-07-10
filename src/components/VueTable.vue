@@ -1,5 +1,5 @@
 <template>
-  <table class="vue-table" :class="{'vue-table--wrap': wrap}" :style="sizesStyle">
+  <table class="vue-table" :class="{'vue-table--wrap': wrap, 'vue-table--click': hasClickListener}" :style="sizesStyle">
     <thead>
       <tr>
         <slot />
@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item, index) in data" :key="item.id">
+      <tr v-for="(item, index) in data" :key="item.id" @click.prevent="rowClicked($event, item, index)">
         <template v-for="(column, order) in columnsToDisplay">
           <slot
             :name="column.id"
@@ -79,7 +79,7 @@ export default {
     id: {
       type: String,
       required: true,
-    }
+    },    
   },
   data: () => ({
     columns: [],
@@ -99,6 +99,10 @@ export default {
       return (
         this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0
       );
+    },
+    hasClickListener(){
+      return this.$listeners && this.$listeners.clicked;
+      return this.$listeners && this.$listeners.click;
     }
   },
   mounted() {
@@ -170,6 +174,12 @@ export default {
         const {id, direction} = JSON.parse(sort);
         this.sort(id, direction);
       }
+    },
+    rowClicked(event, item, index) {
+      if (event.target.classList.contains('table-action')) {
+        return;
+      }
+      this.$emit('click', event, item, index);
     }
   }
 };
@@ -204,6 +214,11 @@ table.vue-table {
         word-wrap: break-word;
         hyphens: auto;
         white-space: normal;
+    }
+  }
+  &.vue-table--click {
+    tr td {
+      cursor: pointer;
     }
   }
   thead {
