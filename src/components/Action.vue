@@ -50,17 +50,17 @@ export default {
   text-transform: uppercase;
   cursor: pointer;
   &.table-action--primary {
-    color: #3366ff;
+    color: var(--table-primary-color);
     font-weight: 600;
   }
   &.table-action--secondary {
-    color: #9da4ae;
+    color: var(--table-secondary-color);
   }
   &.table-action--success {
-    color: #33cc66;
+    color: var(--table-success-color);
   }
   &.table-action--danger {
-    color: #ff3366;
+    color: var(--table-danger-color);
   }
 
 }

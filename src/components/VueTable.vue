@@ -142,6 +142,13 @@ export default {
 <style lang="scss">
 
 table.vue-table {
+
+  --table-font-color: #203152;
+  --table-primary-color: #3366ff;
+  --table-secondary-color: #9da4ae;
+  --table-success-color: #33cc66;
+  --table-danger-color: #ff3366;
+
   display: block;
   min-width: 100%;
   border-collapse: collapse;
@@ -151,6 +158,8 @@ table.vue-table {
   border-radius: 4px;
   font-size: 14px;
   text-align: left;
+  color: var(--table-font-color);
+  
   &.vue-table--wrap {
     td,
     td * {
