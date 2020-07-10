@@ -1,6 +1,6 @@
 f<template>
   <div id="app">
-    <vue-table :data="items" @update-item="updateItem" @sort="sortTable">
+    <vue-table :data="items" @update-item="updateItem" @sort="sortTable" wrap>
       <column id="first_name" label="First Name" editable sortable resizable />
       <column id="last_name" label="Last Name" editable sortable resizable />
       <!-- <column id="email" label="Email"/>

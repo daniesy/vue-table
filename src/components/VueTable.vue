@@ -1,5 +1,5 @@
 <template>
-  <table class="vue-table" :style="sizesStyle">
+  <table class="vue-table" :class="{'vue-table--wrap': wrap}" :style="sizesStyle">
     <thead>
       <tr>
         <slot />
@@ -74,7 +74,8 @@ export default {
       type: String,
       default: "Cancel"
     },
-    actionClass: String
+    actionClass: String,
+    wrap: Boolean
   },
   data: () => ({
     columns: [],
@@ -150,6 +151,15 @@ table.vue-table {
   border-radius: 4px;
   font-size: 14px;
   text-align: left;
+  &.vue-table--wrap {
+    td,
+    td * {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+        white-space: normal;
+    }
+  }
   thead {
     display: none;
   }
