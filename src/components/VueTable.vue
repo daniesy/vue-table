@@ -84,7 +84,8 @@ export default {
   data: () => ({
     columns: [],
     sizes: [],
-    editingColumns: {}
+    editingColumns: {},
+    sortColumns: null,
   }),
   computed: {
     columnsToDisplay() {
@@ -103,6 +104,7 @@ export default {
   mounted() {
     this.columns = this.$children.filter(c => c.$options.name === "Column");
     this.loadSizes();    
+    this.loadSort();
   },
   methods: {
     saveSizes() {
@@ -148,9 +150,26 @@ export default {
     },
     sort(id, direction) {
       this.columns.forEach(column => {
-        column.isSorting = column.id === id && column.sortable;
+        if (column.id === id && column.sortable) {
+          column.isSorting = true;
+          column.isSortingDesc = direction === "desc";
+        } else {
+          column.isSorting = false;
+        }
       });
+
+      this.saveSort({id, direction})
       this.$emit("sort", id, direction);
+    },
+    saveSort(data) {
+      localStorage.setItem(`${this.id}-column-sort`, JSON.stringify(data));
+    },
+    loadSort() {
+      const sort = localStorage.getItem(`${this.id}-column-sort`);
+      if (sort) {
+        const {id, direction} = JSON.parse(sort);
+        this.sort(id, direction);
+      }
     }
   }
 };
