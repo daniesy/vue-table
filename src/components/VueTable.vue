@@ -1,5 +1,5 @@
 <template>
-  <table class="vue-table" :class="{'vue-table--wrap': wrap, 'vue-table--click': hasClickListener}" :style="sizesStyle">
+  <table class="vue-table" :class="{'vue-table--wrap': wrap, 'vue-table--click': hasClickListener, 'vue-table--valign': verticalAlign}" :style="sizesStyle">
     <thead>
       <tr>
         <slot />
@@ -80,6 +80,7 @@ export default {
       type: String,
       required: true,
     },    
+    verticalAlign: Boolean,
   },
   data: () => ({
     columns: [],
@@ -101,7 +102,6 @@ export default {
       );
     },
     hasClickListener(){
-      return this.$listeners && this.$listeners.clicked;
       return this.$listeners && this.$listeners.click;
     }
   },
@@ -215,10 +215,26 @@ table.vue-table {
         hyphens: auto;
         white-space: normal;
     }
+    td {
+        flex-wrap: wrap;
+    }
   }
   &.vue-table--click {
+    tr,
     tr td {
       cursor: pointer;
+    }
+  }
+  &.vue-table--valign {
+    align-items: center;
+    td:not(.table-actions) {    
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    td.table-actions {
+      display: flex;
+      align-items: center;
     }
   }
   thead {
