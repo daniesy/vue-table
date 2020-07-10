@@ -1,18 +1,16 @@
 {
   "name": "@daniesy/vue-table",
-  "version": "0.0.14",
-  "main": "./dist/vuetable.common.js",
+  "version": "0.0.15",
+  "main": "./dist/vue-table.common.js",
   "files": [
     "dist/*",
     "src/*",
-    "public/*",
-    "*.json",
-    "*.js"
+    "*.json"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name vuetable ./src/index.js",
+    "build-bundle": "vue-cli-service build --target lib --name vue-table ./src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -30,6 +28,12 @@
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
+  },
+  "author": "Dan Florian",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daniesy/vue-table.git"
   },
   "eslintConfig": {
     "root": true,
