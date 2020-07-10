@@ -19,8 +19,7 @@ f<template>
         </td>
       </template>
       <template #actions="{ index }">
-        <action type="primary" edit>Edit</action>
-        <action type="success" edit>Mark as fixed</action>
+        <action type="primary" edit>Edit</action>        
         <action type="danger" @click="deleteItem(index)">Delete</action>
       </template>
     </vue-table>
