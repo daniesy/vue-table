@@ -177,6 +177,7 @@ export default {
     },
     rowClicked(event, item, index) {
       if (event.target.classList.contains('table-action')) {
+        this.editingColumns[index] ||
         return;
       }
       this.$emit('click', event, item, index);
