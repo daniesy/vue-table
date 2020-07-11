@@ -39,7 +39,6 @@ export default {
 
 <style lang="scss" scoped>
 .table-action {
-  min-width: 90px;
   text-align: center;
   outline: none;
 
