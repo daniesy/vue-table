@@ -2,13 +2,13 @@
   <td class="table-cell table-actions">
     <template v-if="editMode">
       <action
-        @click="$parent.saveChanges(index)"
+        @clicked="$parent.saveChanges(index)"
         type="success"
         :class="actionClass"
         >{{ saveLabel }}</action
       >
       <action
-        @click="$parent.cancelChanges(index)"
+        @clicked="$parent.cancelChanges(index)"
         type="secondary"
         :class="actionClass"
         >{{ cancelLabel }}</action
