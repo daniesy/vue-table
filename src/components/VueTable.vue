@@ -339,14 +339,14 @@ table.vue-table {
       position: absolute;
       display: block;
       background-color: #2b222a;
-      width: 12px;
-      height: 12px;
+      width: 8px;
+      height: 8px;
       border-radius: 0 0 0 2px;
       clip-path: polygon(0 0, 0% 100%, 100% 100%);
       transform: rotate(-45deg);
       transform-origin: center;
-      left: calc(50% - 6px);
-      margin-top: -6px;
+      left: calc(50% - 5px);
+      margin-top: -4px;
       z-index: 100000;
     }
     &::after {
@@ -359,10 +359,10 @@ table.vue-table {
       text-transform: none;
       font-weight: normal;
       letter-spacing: normal;
-      font-size: 14px;
+      font-size: 12px;
       background-color: #2b222a;
       color: white;
-      padding: 10px;
+      padding: 5px 10px;
       border-radius: 5px;
       z-index: 100;
     }

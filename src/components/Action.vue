@@ -57,15 +57,27 @@ export default {
   &.table-action--primary {
     color: var(--table-primary-color);
     font-weight: 600;
+    path {
+      fill: var(--table-primary-color);
+    }
   }
   &.table-action--secondary {
     color: var(--table-secondary-color);
+    path {
+      fill: var(--table-secondary-color);
+    }
   }
   &.table-action--success {
     color: var(--table-success-color);
+    path {
+      fill: var(--table-success-color);
+    }
   }
   &.table-action--danger {
     color: var(--table-danger-color);
+    path {
+      fill: var(--table-danger-color);
+    }
   }
 }
 </style>
