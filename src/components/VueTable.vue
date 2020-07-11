@@ -354,7 +354,7 @@ table.vue-table {
       display: inline-block;
       position: absolute;
       left: 50%;
-      min-width: 100px;
+      white-space: nowrap;
       transform: translate(-50%, -100%);
       text-transform: none;
       font-weight: normal;
