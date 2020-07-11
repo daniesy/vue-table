@@ -14,7 +14,23 @@
     <div class="table-column-wrapper">
       {{ label }}
       <template v-if="sortable">
-        <i class="fas" :class="sortingClass" />
+        <svg
+          width="9"
+          viewBox="0 0 287 399"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            v-if="!isSorting || (isSorting && !isSortingDesc)"
+            d="M262.0660 167.050H24.0657C2.665680 167.050 -8.03432 141.15 7.06568 126.05L126.0660 7.05C135.466 -2.35 150.666 -2.35 159.966 7.05L278.966 126.05C294.166 141.15 283.466 167.050 262.0660 167.050Z"
+            fill="black"
+          />
+          <path
+            v-if="!isSorting || (isSorting && isSortingDesc)"
+            d="M24.0657 231H262.0660C283.466 231 294.166 256.9 279.0660 272L160.0660 391C150.666 400.4 135.466 400.4 126.166 391L7.06568 272C-8.03432 256.9 2.665680 231 24.0657 231Z"
+            fill="black"
+          />
+        </svg>
       </template>
     </div>
     <div
