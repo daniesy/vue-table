@@ -3,6 +3,7 @@
     class="table-action"
     :class="`table-action--${type}`"
     @click="clicked"
+    :data-tooltip="tooltip"
   >
     <slot />
   </button>
@@ -12,7 +13,8 @@
 export default {
   props: {
     type: String,
-    edit: Boolean
+    edit: Boolean,
+    tooltip: String
   },
   data: () => ({
     actions: null

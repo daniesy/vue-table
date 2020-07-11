@@ -324,6 +324,57 @@ table.vue-table {
   &:hover {
     box-shadow: 0 0.5rem 2rem #d8dfed;
   }
+  [data-tooltip] {
+    position: relative;
+    &::before,
+    &::after {
+      top: -15px;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s top ease-in-out, 0.3s opacity ease-in-out,
+        0.3s visibility ease-in-out;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      display: block;
+      background-color: #2b222a;
+      width: 12px;
+      height: 12px;
+      border-radius: 0 0 0 2px;
+      clip-path: polygon(0 0, 0% 100%, 100% 100%);
+      transform: rotate(-45deg);
+      transform-origin: center;
+      left: calc(50% - 6px);
+      margin-top: -6px;
+      z-index: 100000;
+    }
+    &::after {
+      content: attr(data-tooltip);
+      display: inline-block;
+      position: absolute;
+      left: 50%;
+      min-width: 100px;
+      transform: translate(-50%, -100%);
+      text-transform: none;
+      font-weight: normal;
+      letter-spacing: normal;
+      font-size: 14px;
+      background-color: #2b222a;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 100;
+    }
+    &:hover {
+      &::before,
+      &::after {
+        top: -10px;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
   thead {
     display: none;
   }

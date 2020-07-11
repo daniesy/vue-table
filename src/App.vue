@@ -23,14 +23,14 @@ f<template>
           {{ item.first_name }}<br /><small>{{ item.country }}</small>
         </td>
       </template>
-      <template #actdions="{ index }">
-        <action type="primary" edit>Edit</action>
+      <template #actions="{ index }">
+        <action type="primary" tooltip="Click here to edit" edit>Edit</action>
         <action type="danger" @clicked="deleteItem(index)">Delete</action>
       </template>
-      <template #dropdown-actions="{ index }">
+      <!-- <template #dropdown-actions="{ index }">
         <action type="primary" edit>Edit</action>
         <action type="danger" @clicked="deleteItem(index)">Delete</action>
-      </template>
+      </template> -->
     </vue-table>
   </div>
 </template>
