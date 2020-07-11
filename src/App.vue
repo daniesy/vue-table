@@ -1,12 +1,17 @@
 f<template>
   <div id="app">
-    <vue-table :data="items" 
-        @click="clickedItem" 
-        @update-item="updateItem" 
-        @sort="sortTable" 
-        id="demo" 
-        wrap 
-        vertical-align>
+    <vue-table
+      :data="items"
+      @clicked="clickedItem"
+      @update-item="updateItem"
+      @sort="sortTable"
+      :row-spacing="10"
+      id="demo"
+      wrap
+      vertical-align
+      vertical-actions
+      left-actions
+    >
       <column id="first_name" label="First Name" editable sortable resizable />
       <column id="last_name" label="Last Name" editable sortable resizable />
       <!-- <column id="email" label="Email"/>
@@ -18,9 +23,13 @@ f<template>
           {{ item.first_name }}<br /><small>{{ item.country }}</small>
         </td>
       </template>
-      <template #actions="{ index }">
-        <action type="primary" edit>Edit</action>        
-        <action type="danger" @click="deleteItem(index)">Delete</action>
+      <template #actdions="{ index }">
+        <action type="primary" edit>Edit</action>
+        <action type="danger" @clicked="deleteItem(index)">Delete</action>
+      </template>
+      <template #dropdown-actions="{ index }">
+        <action type="primary" edit>Edit</action>
+        <action type="danger" @clicked="deleteItem(index)">Delete</action>
       </template>
     </vue-table>
   </div>
@@ -263,11 +272,14 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  background: #fbfafd;
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
 }
 </style>

@@ -1,13 +1,33 @@
 <template>
-  <table class="vue-table" :class="{'vue-table--wrap': wrap, 'vue-table--click': hasClickListener, 'vue-table--valign': verticalAlign}" :style="sizesStyle">
+  <table
+    class="vue-table"
+    :class="{
+      'vue-table--wrap': wrap,
+      'vue-table--click': hasClickListener,
+      'vue-table--valign': verticalAlign,
+      'vue-table--alternate': alternateRows,
+      'vue-table--rowspacing': rowSpacing !== 0
+    }"
+    :style="style"
+  >
     <thead>
       <tr>
         <slot />
-        <column v-if="hasActions" min="auto" max="auto" hidden label="" />
+        <column
+          v-if="hasActions || hasDropdownActions"
+          min="auto"
+          max="auto"
+          hidden
+          label=""
+        />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item, index) in data" :key="item.id" @click.prevent="rowClicked($event, item, index)">
+      <tr
+        v-for="(item, index) in data"
+        :key="item.id"
+        @click="rowClicked($event, item, index)"
+      >
         <template v-for="(column, order) in columnsToDisplay">
           <slot
             :name="column.id"
@@ -35,15 +55,31 @@
           </slot>
         </template>
         <actions
-          :key="`${item.id}actions`"
+          :key="`${item.id}-actions`"
           :index="index"
           :edit-mode="editingColumns[index] || false"
           :save-label="saveLabel"
           :cancel-label="cancelLabel"
           :action-class="actionClass"
+          v-if="hasActions"
         >
           <slot name="actions" :index="index" />
         </actions>
+        <dropdown-actions
+          :key="`${item.id}-dropdown-actions`"
+          :index="index"
+          :edit-mode="editingColumns[index] || false"
+          :save-label="saveLabel"
+          :cancel-label="cancelLabel"
+          :action-class="actionClass"
+          :vertical-actions="verticalActions"
+          :left-actions="leftActions"
+          :active-index="dropdownActiveIndex"
+          @toggle="changeActiveIndex"
+          v-if="hasDropdownActions"
+        >
+          <slot name="dropdown-actions" :index="index" />
+        </dropdown-actions>
       </tr>
     </tbody>
   </table>
@@ -51,12 +87,14 @@
 
 <script>
 import Actions from "./Actions";
+import DropdownActions from "./DropdownActions";
 import Cell from "./Cell";
 import Column from "./Column";
 
 export default {
   name: "Table",
   components: {
+    DropdownActions,
     Actions,
     Cell,
     Column
@@ -78,15 +116,23 @@ export default {
     wrap: Boolean,
     id: {
       type: String,
-      required: true,
-    },    
+      required: true
+    },
     verticalAlign: Boolean,
+    verticalActions: Boolean,
+    leftActions: Boolean,
+    alternateRows: Boolean,
+    rowSpacing: {
+      type: Number,
+      default: 0
+    }
   },
   data: () => ({
     columns: [],
     sizes: [],
     editingColumns: {},
     sortColumns: null,
+    dropdownActiveIndex: -1
   }),
   computed: {
     columnsToDisplay() {
@@ -96,36 +142,54 @@ export default {
       const sizes = this.sizes.map(s => `minmax(${s.min}, ${s.max})`).join(" ");
       return `grid-template-columns: ${sizes}`;
     },
+    rowsStyle() {
+      return `grid-row-gap: ${this.rowSpacing}px`;
+    },
+    style() {
+      return `${this.sizesStyle};${this.rowsStyle};`;
+    },
     hasActions() {
       return (
-        this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0
+        !!this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0
       );
     },
-    hasClickListener(){
-      return this.$listeners && this.$listeners.click;
+    hasDropdownActions() {
+      return (
+        !!this.$scopedSlots["dropdown-actions"] &&
+        this.$scopedSlots["dropdown-actions"]().length !== 0
+      );
+    },
+    hasClickListener() {
+      return this.$listeners && !!this.$listeners.clicked;
     }
   },
   mounted() {
     this.columns = this.$children.filter(c => c.$options.name === "Column");
-    this.loadSizes();    
+    this.loadSizes();
     this.loadSort();
+    if (this.hasDropdownActions) {
+      window.addEventListener("click", this.hideDropdown);
+    }
   },
   methods: {
     saveSizes() {
       // wait to finish updating
       this.$nextTick(() => {
-        localStorage.setItem(`${this.id}-column-sizes`, JSON.stringify(this.sizes));
+        localStorage.setItem(
+          `${this.id}-column-sizes`,
+          JSON.stringify(this.sizes)
+        );
       });
     },
     loadSizes() {
       const sizes = localStorage.getItem(`${this.id}-column-sizes`);
-      if (sizes) { 
+      if (sizes) {
         this.sizes = JSON.parse(sizes);
       } else {
         this.refreshSizes();
       }
     },
-    refreshSizes() {    
+    refreshSizes() {
       this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
     },
     stopEdit(index) {
@@ -162,7 +226,7 @@ export default {
         }
       });
 
-      this.saveSort({id, direction})
+      this.saveSort({ id, direction });
       this.$emit("sort", id, direction);
     },
     saveSort(data) {
@@ -171,16 +235,25 @@ export default {
     loadSort() {
       const sort = localStorage.getItem(`${this.id}-column-sort`);
       if (sort) {
-        const {id, direction} = JSON.parse(sort);
+        const { id, direction } = JSON.parse(sort);
         this.sort(id, direction);
       }
     },
     rowClicked(event, item, index) {
-      if (event.target.classList.contains('table-action')) {
+      if (
         this.editingColumns[index] ||
+        event.target.classList.contains("table-action") ||
+        event.target.classList.contains("table-dropdown-action")
+      ) {
         return;
       }
-      this.$emit('click', event, item, index);
+      this.$emit("clicked", event, item, index);
+    },
+    changeActiveIndex(index) {
+      this.dropdownActiveIndex = index;
+    },
+    hideDropdown() {
+      this.dropdownActiveIndex = -1;
     }
   }
 };
@@ -188,9 +261,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
 table.vue-table {
-
   --table-font-color: #203152;
   --table-primary-color: #3366ff;
   --table-secondary-color: #9da4ae;
@@ -207,17 +278,25 @@ table.vue-table {
   font-size: 14px;
   text-align: left;
   color: var(--table-font-color);
+  position: relative;
 
   &.vue-table--wrap {
     td,
     td * {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        hyphens: auto;
-        white-space: normal;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+      white-space: normal;
     }
     td {
-        flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+  }
+  &.vue-table--alternate {
+    tr:nth-child(2n + 1) {
+      td {
+        background: rgba(212, 218, 226, 0.1);
+      }
     }
   }
   &.vue-table--click {
@@ -228,7 +307,7 @@ table.vue-table {
   }
   &.vue-table--valign {
     align-items: center;
-    td:not(.table-actions) {    
+    td:not(.table-actions) {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -238,15 +317,19 @@ table.vue-table {
       align-items: center;
     }
   }
+  &.vue-table--rowspacing {
+    border: none;
+    box-shadow: none !important;
+  }
+  &:hover {
+    box-shadow: 0 0.5rem 2rem #d8dfed;
+  }
   thead {
     display: none;
   }
   tbody,
   tr {
     display: contents;
-  }
-  &:hover {
-    box-shadow: 0 0.5rem 2rem #d8dfed;
   }
   .table-column {
     border-bottom: 1px solid #eaedf3;
@@ -255,14 +338,14 @@ table.vue-table {
   tr {
     &:hover {
       td {
-        background: rgba(212, 218, 226, 0.15) !important;
+        background: #fafafa !important;
       }
     }
 
-    &:nth-child(2n + 1) {
-      td {
-        background: rgba(212, 218, 226, 0.1);
-      }
+    td {
+      position: relative;
+      background: white;
+      transition: 0.4s background ease-in-out;
     }
 
     th .table-column-wrapper,

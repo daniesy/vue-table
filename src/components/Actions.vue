@@ -5,14 +5,16 @@
         @click="$parent.saveChanges(index)"
         type="success"
         :class="actionClass"
-      >{{ saveLabel }}</action>
+        >{{ saveLabel }}</action
+      >
       <action
         @click="$parent.cancelChanges(index)"
         type="secondary"
         :class="actionClass"
-      >{{ cancelLabel }}</action>
+        >{{ cancelLabel }}</action
+      >
     </template>
-    <slot v-else/>
+    <slot v-else />
   </td>
 </template>
 
@@ -46,4 +48,3 @@ export default {
   }
 }
 </style>
-

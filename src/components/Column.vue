@@ -92,7 +92,7 @@ export default {
       window.removeEventListener("mousemove", this.onMouseMove);
       window.removeEventListener("mouseup", this.onMouseUp);
       this.$parent.saveSizes();
-    },    
+    },
     resetSize() {
       this.currentMax = this.max;
       this.$parent.refreshSizes();
@@ -112,6 +112,7 @@ th.table-column {
   background: white;
   display: flex;
   height: calc(100% - 2px);
+  z-index: 2;
 
   &.table-column--sortable .table-column-wrapper {
     flex: 1;

@@ -1,6 +1,10 @@
 <template>
-  <button class="table-action" :class="`table-action--${type}`" @click="clicked">
-    <slot/>
+  <button
+    class="table-action"
+    :class="`table-action--${type}`"
+    @click="clicked"
+  >
+    <slot />
   </button>
 </template>
 
@@ -18,7 +22,7 @@ export default {
       if (this.edit) {
         this.actions.toggleEdit();
       }
-      this.$emit("click", e);
+      this.$emit("clicked", e);
     },
     findActions(parent) {
       if (parent.$options.name === "Actions") {
@@ -62,7 +66,5 @@ export default {
   &.table-action--danger {
     color: var(--table-danger-color);
   }
-
 }
 </style>
-
