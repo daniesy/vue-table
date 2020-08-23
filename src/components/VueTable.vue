@@ -210,7 +210,7 @@ export default {
     saveChanges(index) {
       this.stopEdit(index);
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
-            packed = values.reduce((carry, {key, value}) => { carry[key] = carry[value]; return carry}, {}),
+            packed = values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {}),
             dirty = values.filter(({oldValue, value}) => oldValue !== value).length;
 
       this.$emit("update-item", values, index, { dirty, packed});
