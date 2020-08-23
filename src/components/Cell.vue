@@ -13,8 +13,8 @@
       <div class="label">{{ column }}</div>
       <input
         v-model="newValue"
-        @keyup.esc="$parent.cancelChanges(index)"
-        @keyup.enter="$parent.saveChanges(index)"
+        @keyup.esc="$parent.cancelChanges(index, id)"
+        @keyup.enter="$parent.saveChanges(index, id)"
       />
       <div class="error-info" :data-tooltip="error">i</div>
     </template>

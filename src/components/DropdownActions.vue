@@ -18,13 +18,13 @@
       <div class="dropdown-menu">
         <template v-if="editMode">
           <action
-            @clicked="$parent.saveChanges(index)"
+            @clicked="$parent.saveChanges(index, id)"
             type="success"
             :class="actionClass"
             >{{ saveLabel }}</action
           >
           <action
-            @clicked="$parent.cancelChanges(index)"
+            @clicked="$parent.cancelChanges(index, id)"
             type="secondary"
             :class="actionClass"
             >{{ cancelLabel }}</action

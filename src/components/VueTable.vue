@@ -198,14 +198,14 @@ export default {
     refreshSizes() {
       this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
     },
-    stopEdit(index) {
-      this.$set(this.editingColumns, index, false);
+    stopEdit(key) {
+      this.$set(this.editingColumns, key, false);
     },
-    toggleEdit(index) {
+    toggleEdit(key) {
       this.$set(
         this.editingColumns,
-        index,
-        Boolean(1 - (this.editingColumns[index] | 0))
+        key,
+        Boolean(1 - (this.editingColumns[key] | 0))
       );
     },
     editableCellsAtIndex(index) {
@@ -213,16 +213,16 @@ export default {
         c => c.$options.name === "Cell" && c.index === index && c.editable
       );
     },
-    saveChanges(index) {
-      this.stopEdit(index);
+    saveChanges(index, key) {
+      this.stopEdit(key);
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
             packed = values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {}),
             isDirty = values.filter(({oldValue, value}) => oldValue !== value).length;
 
       this.$emit("update-item", { values, index, isDirty, packed});
     },
-    cancelChanges(index) {
-      this.stopEdit(index);
+    cancelChanges(index, key) {
+      this.stopEdit(key);
       this.editableCellsAtIndex(index).forEach(c => c.cancelEdit());
     },
     sort(id, direction) {
