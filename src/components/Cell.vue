@@ -4,6 +4,7 @@
     :class="[
       `table-cell--${id}`,
       isEditing ? 'table-cell--editing' : '',
+      hasError ? 'table-cell--error' : '',
       hoverIndex === index ? 'table-cell--hover' : ''
     ]"
     :title="value"
@@ -15,6 +16,7 @@
         @keyup.esc="$parent.cancelChanges(index)"
         @keyup.enter="$parent.saveChanges(index)"
       />
+      <div class="error-info" :data-tooltip="error">i</div>
     </template>
     <template v-else>
       <div class="label">{{ column }}</div>
@@ -37,7 +39,11 @@ export default {
     editableOrder: Number,
     column: String,
     editable: Boolean,
-    editMode: Boolean
+    editMode: Boolean,
+    error: {
+      type: String,
+      default: "This is an error",
+    },
   },
   computed: {
     value() {
@@ -48,6 +54,9 @@ export default {
     },
     isEditing() {
       return this.editable && this.editMode;
+    },
+    hasError() {
+      return !!this.error;
     }
   },
   methods: {
@@ -82,11 +91,58 @@ export default {
   .label {
     font-weight: bold;
   }
+  &.table-cell--editing {
+    position: relative;
+    overflow: visible;
+    .error-info {
+      position: absolute;
+      font-size: 10px;
+      width: 12px;
+      height: 12px;
+      border: 1px solid;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #E12640;
+      top: calc(50% + 10px);
+      transform: translateY(-50%);
+      opacity: 0;
+      right: -5px;
+      z-index: 10;
+      transition: right .4s ease-out, opacity .3s ease-out;
+    }
+    &.table-cell--error {
+      input {
+        border-color: #E12640;
+      }
+      .error-info {
+        opacity: 1;
+        right: 40px;
+      }
+    }
+  }
+
   @media only screen and (min-width: 768px) {
     display: block;
     .label {
       display: none;
     }
+    &.table-cell--editing {
+      .error-info {
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        right: -5px;
+      }
+      &.table-cell--error {
+        .error-info {
+          right: 20px;
+        }
+      }
+    }
   }
+  
 }
 </style>

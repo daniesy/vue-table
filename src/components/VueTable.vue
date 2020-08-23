@@ -211,9 +211,9 @@ export default {
       this.stopEdit(index);
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
             packed = values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {}),
-            dirty = values.filter(({oldValue, value}) => oldValue !== value).length;
+            isDirty = values.filter(({oldValue, value}) => oldValue !== value).length;
 
-      this.$emit("update-item", values, index, { dirty, packed});
+      this.$emit("update-item", { values, index, isDirty, packed});
     },
     cancelChanges(index) {
       this.stopEdit(index);
