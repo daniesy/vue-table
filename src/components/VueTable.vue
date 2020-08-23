@@ -275,7 +275,7 @@ export default {
       ) {
         return;
       }
-      this.$emit("clicked", event, item, index);
+      this.$emit("clicked", {event, item, index});
     },
     changeActiveIndex(index) {
       this.dropdownActiveIndex = index;
