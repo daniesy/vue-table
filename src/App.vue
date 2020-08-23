@@ -51,10 +51,15 @@ export default {
     deleteItem(index) {
       this.items.splice(index, 1);
     },
-    updateItem(data, index) {
-      data.forEach(item => {
-        this.items[index][item.key] = item.value;
-      });
+    updateItem({isDirty, index, values}, success, error) {
+      if (!isDirty) {  
+        error({"last_name": "Nothing changed!"});
+      } else {
+        values.forEach(item => {
+          this.items[index][item.key] = item.value;
+        });    
+        success();
+      }
     },
     sortTable(key, direction) {
       const compareDesc = (a, b) => {
@@ -81,7 +86,7 @@ export default {
       this.items.sort(compare);
     },
     clickedItem(event, item, index) {
-      console.log(event, item, index);
+      console.log("Clicked item", event, item, index);
     }
   },
   data: () => ({

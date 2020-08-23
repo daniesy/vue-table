@@ -37,16 +37,19 @@
             :order="order"
             :editable="column.editable"
             :edit-mode="editingColumns[item[trackBy]] || false"
+            :errors="errorColumns[item[trackBy]]"
             :item="item"
           >
             <cell
               :name="column.id"
               :id="column.id"
               :index="index"
+              :track-by="trackBy"
               :column="column.label"
               :order="order"
               :editable="column.editable"
               :edit-mode="editingColumns[item[trackBy]] || false"
+              :errors="errorColumns[item[trackBy]]"
               :item="item"
               :key="`${item[trackBy]}${column.id}`"
             >
@@ -137,6 +140,7 @@ export default {
     columns: [],
     sizes: [],
     editingColumns: {},
+    errorColumns: {},
     sortColumns: null,
     dropdownActiveIndex: -1
   }),
@@ -198,6 +202,12 @@ export default {
     refreshSizes() {
       this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
     },
+    addErrors(key, errors) {
+      this.$set(this.errorColumns, key, errors);
+    },
+    removeError(key) {
+      this.$set(this.errorColumns, key, null);
+    },
     stopEdit(key) {
       this.$set(this.editingColumns, key, false);
     },
@@ -214,15 +224,24 @@ export default {
       );
     },
     saveChanges(index, key) {
-      this.stopEdit(key);
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
             packed = values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {}),
             isDirty = values.filter(({oldValue, value}) => oldValue !== value).length;
 
-      this.$emit("update-item", { values, index, isDirty, packed});
+      const success = () => {
+        this.stopEdit(key);
+        this.removeError(key);
+      };
+
+      const error = (errors) => {
+        this.addErrors(key, errors);
+      };
+
+      this.$emit("update-item", { values, index, isDirty, packed}, success, error);
     },
     cancelChanges(index, key) {
       this.stopEdit(key);
+      this.removeError(key);
       this.editableCellsAtIndex(index).forEach(c => c.cancelEdit());
     },
     sort(id, direction) {

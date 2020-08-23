@@ -13,10 +13,10 @@
       <div class="label">{{ column }}</div>
       <input
         v-model="newValue"
-        @keyup.esc="$parent.cancelChanges(index, id)"
-        @keyup.enter="$parent.saveChanges(index, id)"
+        @keyup.esc="$parent.cancelChanges(index, item[trackBy])"
+        @keyup.enter="$parent.saveChanges(index, item[trackBy])"
       />
-      <div class="error-info" :data-tooltip="error">i</div>
+      <div class="error-info" :data-tooltip="err">i</div>
     </template>
     <template v-else>
       <div class="label">{{ column }}</div>
@@ -33,6 +33,7 @@ export default {
   props: {
     item: Object,
     id: String,
+    trackBy: String,
     index: Number,
     hoverIndex: Number,
     order: Number,
@@ -40,10 +41,7 @@ export default {
     column: String,
     editable: Boolean,
     editMode: Boolean,
-    error: {
-      type: String,
-      default: "This is an error",
-    },
+    errors: Object
   },
   computed: {
     value() {
@@ -55,9 +53,13 @@ export default {
     isEditing() {
       return this.editable && this.editMode;
     },
+    err() {
+      if (!this.errors) { return null; }
+      return this.errors[this.id];
+    },
     hasError() {
-      return !!this.error;
-    }
+      return !!this.err;
+    },
   },
   methods: {
     reset() {
@@ -91,34 +93,36 @@ export default {
   .label {
     font-weight: bold;
   }
+  .error-info {
+    position: absolute;
+    font-size: 10px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #E12640;
+    top: calc(50% + 10px);
+    transform: translateY(-50%);
+    opacity: 0;
+    visibility: hidden;
+    right: -5px;
+    z-index: 10;
+    transition: right .4s ease-out, opacity .3s ease-out;
+  }
   &.table-cell--editing {
     position: relative;
     overflow: visible;
-    .error-info {
-      position: absolute;
-      font-size: 10px;
-      width: 12px;
-      height: 12px;
-      border: 1px solid;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: #E12640;
-      top: calc(50% + 10px);
-      transform: translateY(-50%);
-      opacity: 0;
-      right: -5px;
-      z-index: 10;
-      transition: right .4s ease-out, opacity .3s ease-out;
-    }
     &.table-cell--error {
       input {
         border-color: #E12640;
       }
       .error-info {
         opacity: 1;
+        visibility: visible;
         right: 40px;
       }
     }
@@ -129,13 +133,12 @@ export default {
     .label {
       display: none;
     }
-    &.table-cell--editing {
-      .error-info {
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 0;
-        right: -5px;
-      }
+    .error-info {
+      top: 50%;
+      transform: translateY(-50%);
+      right: -5px;
+    }
+    &.table-cell--editing {      
       &.table-cell--error {
         .error-info {
           right: 20px;
