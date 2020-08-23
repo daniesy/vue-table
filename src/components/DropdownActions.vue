@@ -43,6 +43,7 @@ export default {
   components: { Action },
   props: {
     index: Number,
+    id: [String, Number],
     editMode: Boolean,
     cancelLabel: String,
     saveLabel: String,
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     toggleEdit() {
-      this.$parent.toggleEdit(this.index);
+      this.$parent.toggleEdit(this.id);
     },
     elementChanged(e) {
       this.dropdownActive = e.target.checked;

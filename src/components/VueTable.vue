@@ -25,7 +25,7 @@
     <tbody>
       <tr
         v-for="(item, index) in data"
-        :key="item.id"
+        :key="item[trackBy]"
         @click="rowClicked($event, item, index)"
       >
         <template v-for="(column, order) in columnsToDisplay">
@@ -36,7 +36,7 @@
             :column="column.label"
             :order="order"
             :editable="column.editable"
-            :edit-mode="editingColumns[index] || false"
+            :edit-mode="editingColumns[item[trackBy]] || false"
             :item="item"
           >
             <cell
@@ -46,18 +46,19 @@
               :column="column.label"
               :order="order"
               :editable="column.editable"
-              :edit-mode="editingColumns[index] || false"
+              :edit-mode="editingColumns[item[trackBy]] || false"
               :item="item"
-              :key="`${item.id}${column.id}`"
+              :key="`${item[trackBy]}${column.id}`"
             >
               {{ item[column.id] }}
             </cell>
           </slot>
         </template>
         <actions
-          :key="`${item.id}-actions`"
+          :key="`${item[trackBy]}-actions`"
           :index="index"
-          :edit-mode="editingColumns[index] || false"
+          :id="item[trackBy]"
+          :edit-mode="editingColumns[item[trackBy]] || false"
           :save-label="saveLabel"
           :cancel-label="cancelLabel"
           :action-class="actionClass"
@@ -66,9 +67,10 @@
           <slot name="actions" :index="index" />
         </actions>
         <dropdown-actions
-          :key="`${item.id}-dropdown-actions`"
+          :key="`${item[trackBy]}-dropdown-actions`"
           :index="index"
-          :edit-mode="editingColumns[index] || false"
+          :id="item[trackBy]"
+          :edit-mode="editingColumns[item[trackBy]] || false"
           :save-label="saveLabel"
           :cancel-label="cancelLabel"
           :action-class="actionClass"
@@ -117,6 +119,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    trackBy: {
+      type: String,
+      default: "id"
     },
     verticalAlign: Boolean,
     verticalActions: Boolean,
