@@ -6,7 +6,8 @@
       'vue-table--click': hasClickListener,
       'vue-table--valign': verticalAlign,
       'vue-table--alternate': alternateRows,
-      'vue-table--rowspacing': rowSpacing !== 0
+      'vue-table--rowspacing': rowSpacing !== 0,
+      'vue-table--hover' : hoverShadow,
     }"
     :style="style"
   >
@@ -134,7 +135,8 @@ export default {
     rowSpacing: {
       type: Number,
       default: 0
-    }
+    },
+    hoverShadow: Boolean
   },
   data: () => ({
     columns: [],
@@ -349,8 +351,11 @@ table.vue-table {
     border: none;
     box-shadow: none !important;
   }
-  &:hover {
-    box-shadow: 0 0.5rem 2rem #d8dfed;
+  &.vue-table--hover {
+    transition: box-shadow 3s ease-in;
+    &:hover {
+      box-shadow: 0 0.5rem 2rem #d8dfed;
+    }
   }
   [data-tooltip] {
     position: relative;
