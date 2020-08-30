@@ -8,6 +8,7 @@
       'vue-table--alternate': alternateRows,
       'vue-table--rowspacing': rowSpacing !== 0,
       'vue-table--hover' : hoverShadow,
+      'vue-table--border' : hasBorder,
     }"
     :style="style"
   >
@@ -136,7 +137,8 @@ export default {
       type: Number,
       default: 0
     },
-    hoverShadow: Boolean
+    hoverShadow: Boolean,
+    hasBorder: Boolean
   },
   data: () => ({
     columns: [],
@@ -301,7 +303,6 @@ table.vue-table {
   display: block;
   min-width: 100%;
   border-collapse: collapse;
-  border: 1px solid #eaedf3;
   box-sizing: border-box;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
@@ -310,6 +311,9 @@ table.vue-table {
   color: var(--table-font-color);
   position: relative;
 
+  &.vue-table--border {
+    border: 1px solid #eaedf3;
+  }
   &.vue-table--wrap {
     td,
     td * {
