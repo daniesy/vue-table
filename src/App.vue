@@ -1,6 +1,6 @@
 f<template>
   <div id="app">
-    <vue-table
+    <v-table
       :data="items"
       @clicked="clickedItem"
       @update-item="updateItem"
@@ -30,23 +30,19 @@ f<template>
         <action type="primary" edit>Edit</action>
         <action type="danger" @clicked="deleteItem(index)">Delete</action>
       </template> -->
-    </vue-table>
+    </v-table>
   </div>
 </template>
 
 <script>
-import VueTable from "./components/Table";
-import Column from "./components/Column";
-import Action from "./components/Action";
+import TableComponents from "./index";
 
 import { set } from "./tools";
 
 export default {
   name: "App",
   components: {
-    VueTable,
-    Action,
-    Column
+    ...TableComponents,
   },
   methods: {
     deleteItem(index) {
