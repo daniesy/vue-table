@@ -195,6 +195,7 @@ export default {
     if (this.hasDropdownActions) {
       window.addEventListener("click", this.hideDropdown);
     }
+    this.flatData = this.data.map(d => flattenObject(d));
   },
   methods: {
     saveSizes() {
