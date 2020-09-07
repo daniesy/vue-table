@@ -26,7 +26,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="(item, index) in data"
+        v-for="(item, index) in flatData"
         :key="item[trackBy]"
         @click="rowClicked($event, item, index)"
       >
@@ -141,6 +141,7 @@ export default {
     hasBorder: Boolean
   },
   data: () => ({
+    flatData: [],
     columns: [],
     sizes: [],
     editingColumns: {},
@@ -148,7 +149,15 @@ export default {
     sortColumns: null,
     dropdownActiveIndex: -1
   }),
-  computed: {
+  watch: {
+    data: {
+      deep: true,
+      handler: function(values) {
+        this.flatData = values.map(d => this.flattenObject(d));
+      }
+    }
+  },
+  computed: {    
     columnsToDisplay() {
       return this.columns.filter(c => c.id);
     },
@@ -229,7 +238,7 @@ export default {
     },
     saveChanges(index, key) {
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
-            packed = values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {}),
+            packed = this.unflattenObject(values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {})),
             isDirty = values.filter(({oldValue, value}) => oldValue !== value).length;
 
       const success = () => {
@@ -279,13 +288,37 @@ export default {
       ) {
         return;
       }
-      this.$emit("clicked", {event, item, index});
+      this.$emit("clicked", {event, item: this.unflattenObject(item), index});
     },
     changeActiveIndex(index) {
       this.dropdownActiveIndex = index;
     },
     hideDropdown() {
       this.dropdownActiveIndex = -1;
+    },
+    flattenObject(data) {
+      let result = {};
+      for (const key in data) {
+        if ((typeof data[key]) == 'object' && data[key] !== null) {
+          const flatObject = this.flattenObject(data[key]);
+          for (const x in flatObject) {                   
+            result[`${key}.${x}`] = flatObject[x];
+          }
+        } else {
+          result[key] = data[key];
+        }
+      }
+      return result;
+    },
+    unflattenObject(data) {
+      let result = {}
+      for (const i in data) {
+        let keys = i.split('.')
+        keys.reduce(function(r, e, j) {
+          return r[e] || (r[e] = isNaN(Number(keys[j + 1])) ? (keys.length - 1 == j ? data[i] : {}) : [])
+        }, result)
+      }
+      return result
     }
   }
 };

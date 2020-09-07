@@ -18,6 +18,7 @@ f<template>
       <column id="country" label="Country"/>
       <column id="address" label="Address"/>-->
       <column id="iban" label="IBAN" />
+      <column id="nested.status" label="Status" editable />
       <template #first_name="{ item }">
         <td class="table-cell">
           {{ item.first_name }}<br /><small>{{ item.country }}</small>
@@ -56,9 +57,18 @@ export default {
         error({"last_name": "Nothing changed!"});
       } else {
         values.forEach(item => {
-          this.items[index][item.key] = item.value;
+          this.set(this.items[index], item.key, item.value);
         });    
         success();
+      }
+    },
+    set(target, path, value) {
+      const [key, ...keys] = typeof path === 'string' ? path.split(".") : path;
+      if (keys.length) {
+        target[key] = {};
+        this.set(target[key], keys, value);
+      } else {
+        target[key] = value;
       }
     },
     sortTable(key, direction) {
@@ -98,7 +108,10 @@ export default {
         email: "rleeming0@is.gd",
         country: "Japan",
         address: "8 Rieder Place",
-        iban: "FR27 6552 4610 89H2 BHPF YVTZ E61"
+        iban: "FR27 6552 4610 89H2 BHPF YVTZ E61",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 2,
@@ -107,7 +120,10 @@ export default {
         email: "aheibel1@sbwire.com",
         country: "Mongolia",
         address: "2 8th Circle",
-        iban: "EE12 8534 4088 6653 2021"
+        iban: "EE12 8534 4088 6653 2021",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 3,
@@ -116,7 +132,10 @@ export default {
         email: "nkill2@utexas.edu",
         country: "Syria",
         address: "580 Arapahoe Parkway",
-        iban: "FR85 9583 2048 93YI DAIA GVSX U06"
+        iban: "FR85 9583 2048 93YI DAIA GVSX U06",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 4,
@@ -125,7 +144,10 @@ export default {
         email: "mbrightman3@photobucket.com",
         country: "China",
         address: "19 American Center",
-        iban: "GE70 DT37 6963 8607 0176 39"
+        iban: "GE70 DT37 6963 8607 0176 39",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 5,
@@ -134,7 +156,10 @@ export default {
         email: "smcginn4@about.me",
         country: "Sweden",
         address: "1 Sycamore Trail",
-        iban: "MU50 UTQP 1304 8450 4625 8935 383R PR"
+        iban: "MU50 UTQP 1304 8450 4625 8935 383R PR",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 6,
@@ -143,7 +168,10 @@ export default {
         email: "hosban5@wunderground.com",
         country: "Philippines",
         address: "72172 Mifflin Plaza",
-        iban: "SK24 7680 5909 5375 8687 4916"
+        iban: "SK24 7680 5909 5375 8687 4916",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 7,
@@ -152,7 +180,10 @@ export default {
         email: "pkrinks6@oracle.com",
         country: "Kazakhstan",
         address: "04535 Kim Pass",
-        iban: "FR50 3221 9772 68VC 9LZ5 J35O Y92"
+        iban: "FR50 3221 9772 68VC 9LZ5 J35O Y92",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 8,
@@ -161,7 +192,10 @@ export default {
         email: "qliggins7@multiply.com",
         country: "Indonesia",
         address: "42262 Havey Parkway",
-        iban: "SE81 6425 3048 2790 2241 4175"
+        iban: "SE81 6425 3048 2790 2241 4175",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 9,
@@ -170,7 +204,10 @@ export default {
         email: "ikeld8@mac.com",
         country: "Jordan",
         address: "34682 Ridgeview Way",
-        iban: "AZ19 TWKE TSJ2 OFWO R6YT DL2Y MZBU"
+        iban: "AZ19 TWKE TSJ2 OFWO R6YT DL2Y MZBU",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 10,
@@ -179,7 +216,10 @@ export default {
         email: "cbunch9@oakley.com",
         country: "France",
         address: "00 Shelley Point",
-        iban: "CZ63 1886 3197 8748 8643 9175"
+        iban: "CZ63 1886 3197 8748 8643 9175",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 11,
@@ -188,7 +228,10 @@ export default {
         email: "mbraggea@4shared.com",
         country: "Jordan",
         address: "9 Prairieview Pass",
-        iban: "HU05 3429 3366 5573 5750 1223 5278"
+        iban: "HU05 3429 3366 5573 5750 1223 5278",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 12,
@@ -197,7 +240,10 @@ export default {
         email: "rbazogeb@canalblog.com",
         country: "Ecuador",
         address: "01 Tony Park",
-        iban: "DO13 HPKR 2709 1723 3447 2835 0614"
+        iban: "DO13 HPKR 2709 1723 3447 2835 0614",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 13,
@@ -206,7 +252,10 @@ export default {
         email: "fizzattc@miitbeian.gov.cn",
         country: "France",
         address: "508 Dakota Street",
-        iban: "SE80 6194 7665 3836 4470 5403"
+        iban: "SE80 6194 7665 3836 4470 5403",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 14,
@@ -215,7 +264,10 @@ export default {
         email: "ldagond@hao123.com",
         country: "Ukraine",
         address: "255 Myrtle Road",
-        iban: "BG51 IHVG 1363 47AC RL6I RE"
+        iban: "BG51 IHVG 1363 47AC RL6I RE",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 15,
@@ -224,7 +276,10 @@ export default {
         email: "lkennarde@alibaba.com",
         country: "Portugal",
         address: "26 Lake View Circle",
-        iban: "GR54 4593 917V A6NZ FRLJ JAU0 XUI"
+        iban: "GR54 4593 917V A6NZ FRLJ JAU0 XUI",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 16,
@@ -233,7 +288,10 @@ export default {
         email: "ccrossdalef@intel.com",
         country: "Poland",
         address: "830 Kropf Terrace",
-        iban: "RO62 FBRM FWXK ZZML L8OO QNCJ"
+        iban: "RO62 FBRM FWXK ZZML L8OO QNCJ",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 17,
@@ -242,7 +300,10 @@ export default {
         email: "jtweddleg@freewebs.com",
         country: "China",
         address: "02 Sherman Way",
-        iban: "VG80 ASDP 7286 0153 1642 1583"
+        iban: "VG80 ASDP 7286 0153 1642 1583",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 18,
@@ -251,7 +312,10 @@ export default {
         email: "pgardenerh@istockphoto.com",
         country: "Ukraine",
         address: "9 Meadow Valley Way",
-        iban: "IS26 2313 5532 6013 2030 1202 11"
+        iban: "IS26 2313 5532 6013 2030 1202 11",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 19,
@@ -260,7 +324,10 @@ export default {
         email: "laumerlei@opera.com",
         country: "Angola",
         address: "82 Michigan Drive",
-        iban: "NO86 0101 7099 267"
+        iban: "NO86 0101 7099 267",
+        nested: {
+          status: "ok",
+        }
       },
       {
         id: 20,
@@ -269,7 +336,10 @@ export default {
         email: "tmingusj@java.com",
         country: "New Zealand",
         address: "19481 Nova Court",
-        iban: "AT31 8530 8451 9377 7918"
+        iban: "AT31 8530 8451 9377 7918",
+        nested: {
+          status: "ok",
+        }
       }
     ]
   })
