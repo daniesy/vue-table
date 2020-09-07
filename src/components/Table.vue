@@ -7,8 +7,8 @@
       'vue-table--valign': verticalAlign,
       'vue-table--alternate': alternateRows,
       'vue-table--rowspacing': rowSpacing !== 0,
-      'vue-table--hover' : hoverShadow,
-      'vue-table--border' : hasBorder,
+      'vue-table--hover': hoverShadow,
+      'vue-table--border': hasBorder
     }"
     :style="style"
   >
@@ -31,33 +31,33 @@
         @click="rowClicked($event, item, index)"
       >
         <template v-for="(column, order) in columnsToDisplay">
-          <slot
+          <cell
             :name="column.id"
             :id="column.id"
             :index="index"
+            :track-by="trackBy"
             :column="column.label"
             :order="order"
             :editable="column.editable"
             :edit-mode="editingColumns[item[trackBy]] || false"
             :errors="errorColumns[item[trackBy]]"
             :item="item"
+            :key="`${item[trackBy]}${column.id}`"
           >
-            <cell
+            <slot
               :name="column.id"
               :id="column.id"
               :index="index"
-              :track-by="trackBy"
               :column="column.label"
               :order="order"
               :editable="column.editable"
               :edit-mode="editingColumns[item[trackBy]] || false"
               :errors="errorColumns[item[trackBy]]"
               :item="item"
-              :key="`${item[trackBy]}${column.id}`"
             >
               {{ item[column.id] }}
-            </cell>
-          </slot>
+            </slot>
+          </cell>
         </template>
         <actions
           :key="`${item[trackBy]}-actions`"
@@ -97,6 +97,8 @@ import Actions from "./Actions";
 import DropdownActions from "./DropdownActions";
 import Cell from "./Cell";
 import Column from "./Column";
+
+import { flattenObject, unflattenObject } from "../tools";
 
 export default {
   name: "Table",
@@ -153,11 +155,11 @@ export default {
     data: {
       deep: true,
       handler: function(values) {
-        this.flatData = values.map(d => this.flattenObject(d));
+        this.flatData = values.map(d => flattenObject(d));
       }
     }
   },
-  computed: {    
+  computed: {
     columnsToDisplay() {
       return this.columns.filter(c => c.id);
     },
@@ -238,19 +240,30 @@ export default {
     },
     saveChanges(index, key) {
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
-            packed = this.unflattenObject(values.reduce((carry, {key, value}) => { carry[key] = value; return carry}, {})),
-            isDirty = values.filter(({oldValue, value}) => oldValue !== value).length;
+        packed = unflattenObject(
+          values.reduce((carry, { key, value }) => {
+            carry[key] = value;
+            return carry;
+          }, {})
+        ),
+        isDirty = values.filter(({ oldValue, value }) => oldValue !== value)
+          .length;
 
       const success = () => {
         this.stopEdit(key);
         this.removeError(key);
       };
 
-      const error = (errors) => {
+      const error = errors => {
         this.addErrors(key, errors);
       };
 
-      this.$emit("update-item", { values, index, isDirty, packed}, success, error);
+      this.$emit(
+        "update-item",
+        { values, index, isDirty, packed },
+        success,
+        error
+      );
     },
     cancelChanges(index, key) {
       this.stopEdit(key);
@@ -288,37 +301,13 @@ export default {
       ) {
         return;
       }
-      this.$emit("clicked", {event, item: this.unflattenObject(item), index});
+      this.$emit("clicked", { event, item: unflattenObject(item), index });
     },
     changeActiveIndex(index) {
       this.dropdownActiveIndex = index;
     },
     hideDropdown() {
       this.dropdownActiveIndex = -1;
-    },
-    flattenObject(data) {
-      let result = {};
-      for (const key in data) {
-        if ((typeof data[key]) == 'object' && data[key] !== null) {
-          const flatObject = this.flattenObject(data[key]);
-          for (const x in flatObject) {                   
-            result[`${key}.${x}`] = flatObject[x];
-          }
-        } else {
-          result[key] = data[key];
-        }
-      }
-      return result;
-    },
-    unflattenObject(data) {
-      let result = {}
-      for (const i in data) {
-        let keys = i.split('.')
-        keys.reduce(function(r, e, j) {
-          return r[e] || (r[e] = isNaN(Number(keys[j + 1])) ? (keys.length - 1 == j ? data[i] : {}) : [])
-        }, result)
-      }
-      return result
     }
   }
 };

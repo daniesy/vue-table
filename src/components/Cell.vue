@@ -54,12 +54,14 @@ export default {
       return this.editable && this.editMode;
     },
     err() {
-      if (!this.errors) { return null; }
+      if (!this.errors) {
+        return null;
+      }
       return this.errors[this.id];
     },
     hasError() {
       return !!this.err;
-    },
+    }
   },
   methods: {
     reset() {
@@ -104,21 +106,21 @@ export default {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: #E12640;
+    color: #e12640;
     top: calc(50% + 10px);
     transform: translateY(-50%);
     opacity: 0;
     visibility: hidden;
     right: -5px;
     z-index: 10;
-    transition: right .4s ease-out, opacity .3s ease-out;
+    transition: right 0.4s ease-out, opacity 0.3s ease-out;
   }
   &.table-cell--editing {
     position: relative;
     overflow: visible;
     &.table-cell--error {
       input {
-        border-color: #E12640;
+        border-color: #e12640;
       }
       .error-info {
         opacity: 1;
@@ -138,7 +140,7 @@ export default {
       transform: translateY(-50%);
       right: -5px;
     }
-    &.table-cell--editing {      
+    &.table-cell--editing {
       &.table-cell--error {
         .error-info {
           right: 20px;
@@ -146,6 +148,5 @@ export default {
       }
     }
   }
-  
 }
 </style>
