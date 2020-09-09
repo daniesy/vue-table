@@ -323,7 +323,7 @@ table.vue-table {
   --table-success-color: #33cc66;
   --table-danger-color: #ff3366;
 
-  display: block;
+  display: grid;
   min-width: 100%;
   border-collapse: collapse;
   box-sizing: border-box;
@@ -489,9 +489,17 @@ table.vue-table {
       border-bottom: 1px solid #eaedf3;
     }
   }
-
+ @media only screen and (max-width: 540px) {
+    grid-template-columns: 1fr !important
+  }
+  @media only screen and (min-width: 540px) and (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr) !important;
+    td.table-actions {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
   @media only screen and (min-width: 768px) {
-    display: grid;
     align-items: center;
     min-width: 100%;
     thead {
