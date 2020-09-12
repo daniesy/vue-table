@@ -69,7 +69,7 @@
           :action-class="actionClass"
           v-if="hasActions"
         >
-          <slot name="actions" :index="index" />
+          <slot name="actions" :index="index" :item="item" />
         </actions>
         <dropdown-actions
           :key="`${item[trackBy]}-dropdown-actions`"
@@ -85,7 +85,7 @@
           @toggle="changeActiveIndex"
           v-if="hasDropdownActions"
         >
-          <slot name="dropdown-actions" :index="index" />
+          <slot name="dropdown-actions" :index="index" :item="item" />
         </dropdown-actions>
       </tr>
     </tbody>
