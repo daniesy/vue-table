@@ -67,6 +67,7 @@
           :save-label="saveLabel"
           :cancel-label="cancelLabel"
           :action-class="actionClass"
+          :item="item"
           v-if="hasActions"
         >
           <slot name="actions" :index="index" :item="item" />
@@ -82,6 +83,7 @@
           :vertical-actions="verticalActions"
           :left-actions="leftActions"
           :active-index="dropdownActiveIndex"
+          :item="item"
           @toggle="changeActiveIndex"
           v-if="hasDropdownActions"
         >
