@@ -41,7 +41,7 @@
             :editable="column.editable"
             :edit-mode="editingColumns[item[trackBy]] || false"
             :errors="errorColumns[item[trackBy]]"
-            :item="item"
+            :item="data[index]"
             :key="`${item[trackBy]}${column.id}`"
           >
             <slot
@@ -53,7 +53,7 @@
               :editable="column.editable"
               :edit-mode="editingColumns[item[trackBy]] || false"
               :errors="errorColumns[item[trackBy]]"
-              :item="item"
+              :item="data[index]"
             >
               {{ item[column.id] }}
             </slot>
@@ -67,10 +67,10 @@
           :save-label="saveLabel"
           :cancel-label="cancelLabel"
           :action-class="actionClass"
-          :item="item"
+          :item="data[index]"
           v-if="hasActions"
         >
-          <slot name="actions" :index="index" :item="item" />
+          <slot name="actions" :index="index" :item="data[index]" />
         </actions>
         <dropdown-actions
           :key="`${item[trackBy]}-dropdown-actions`"
@@ -83,11 +83,11 @@
           :vertical-actions="verticalActions"
           :left-actions="leftActions"
           :active-index="dropdownActiveIndex"
-          :item="item"
+          :item="data[index]"
           @toggle="changeActiveIndex"
           v-if="hasDropdownActions"
         >
-          <slot name="dropdown-actions" :index="index" :item="item" />
+          <slot name="dropdown-actions" :index="index" :item="data[index]" />
         </dropdown-actions>
       </tr>
     </tbody>
