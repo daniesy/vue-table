@@ -21,12 +21,13 @@ export default {
   }),
   methods: {
     clicked(e) {
-      if (this.edit) {
+      if (this.edit && this.actions) {
         this.actions.toggleEdit();
       }
       this.$emit("clicked", e);
     },
     findActions(parent) {
+      if (!parent) return null;
       if (parent.$options.name === "Actions") {
         return parent;
       }

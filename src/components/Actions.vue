@@ -2,7 +2,7 @@
   <td class="table-cell table-actions">
     <template v-if="editMode">
       <action
-        @clicked="$parent.saveChanges(index, id)"
+        @clicked="handleSave"
         type="success"
         :class="actionClass"
         :tooltip="saveLabel"
@@ -21,7 +21,7 @@
         </svg>
       </action>
       <action
-        @clicked="$parent.cancelChanges(index, id)"
+        @clicked="handleCancel"
         type="secondary"
         :class="actionClass"
         :tooltip="cancelLabel"
@@ -60,6 +60,12 @@ export default {
   methods: {
     toggleEdit() {
       this.$parent.toggleEdit(this.id);
+    },
+    handleSave() {
+      this.$parent.saveChanges(this.index, this.id);
+    },
+    handleCancel() {
+      this.$parent.cancelChanges(this.index, this.id);
     }
   }
 };

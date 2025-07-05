@@ -47,9 +47,6 @@ export default {
     value() {
       return this.item[this.id] || "";
     },
-    key() {
-      return this.$vnode.key;
-    },
     isEditing() {
       return this.editable && this.editMode;
     },

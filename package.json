@@ -1,6 +1,6 @@
 {
   "name": "@daniesy/vue-table",
-  "version": "0.0.33",
+  "version": "1.0.00",
   "main": "./dist/vue-table.common.js",
   "files": [
     "dist/*",
@@ -14,20 +14,19 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "vue": "^2.6.11"
+    "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^4.4.6",
-    "@vue/cli-service": "^4.4.6",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "eslint": "^7.4.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-vue": "^6.1.2",
+    "@vue/cli-plugin-eslint": "^5.0.0",
+    "@vue/cli-service": "^5.0.0",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-vue": "^9.0.0",
     "minimist": ">=1.2.2",
-    "node-sass": "^4.14.1",
-    "prettier": "^1.19.1",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "sass": "^1.60.0",
+    "prettier": "^3.0.0",
+    "sass-loader": "^13.0.0"
   },
   "author": "Dan Florian",
   "license": "MIT",
@@ -41,14 +40,17 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended",
       "@vue/prettier"
     ],
+    "rules": {
+      "vue/multi-word-component-names": "off",
+      "vue/no-reserved-component-names": "off"
+    },
     "parserOptions": {
       "ecmaVersion": 2020
-    },
-    "rules": {}
+    }
   },
   "browserslist": [
     "> 1%",

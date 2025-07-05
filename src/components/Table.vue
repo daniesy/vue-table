@@ -30,8 +30,9 @@
         :key="item[trackBy]"
         @click="rowClicked($event, item, index)"
       >
-        <template v-for="(column, order) in columnsToDisplay">
+        <template v-for="(column, order) in columnsToDisplay" :key="`${item[trackBy]}${column.id}`">
           <cell
+            :ref="el => registerCell(el, index, column.id)"
             :name="column.id"
             :id="column.id"
             :index="index"
@@ -42,7 +43,6 @@
             :edit-mode="editingColumns[item[trackBy]] || false"
             :errors="errorColumns[item[trackBy]]"
             :item="data[index]"
-            :key="`${item[trackBy]}${column.id}`"
           >
             <slot
               :name="column.id"
@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import { reactive } from "vue";
 import Actions from "./Actions";
 import DropdownActions from "./DropdownActions";
 import Cell from "./Cell";
@@ -144,19 +145,28 @@ export default {
     hoverShadow: Boolean,
     hasBorder: Boolean
   },
-  data: () => ({
-    flatData: [],
-    columns: [],
-    sizes: [],
-    editingColumns: {},
-    errorColumns: {},
-    sortColumns: null,
-    dropdownActiveIndex: -1
-  }),
+  data() {
+    return {
+      flatData: [],
+      columns: [],
+      sizes: [],
+      editingColumns: reactive({}),
+      errorColumns: reactive({}),
+      sortColumns: null,
+      dropdownActiveIndex: -1,
+      cellComponents: []
+    };
+  },
+  provide() {
+    return {
+      table: this
+    };
+  },
   watch: {
     data: {
       deep: true,
       handler: function(values) {
+        this.cellComponents = [];
         this.flatData = values.map(d => flattenObject(d));
       }
     }
@@ -176,22 +186,16 @@ export default {
       return `${this.sizesStyle};${this.rowsStyle};`;
     },
     hasActions() {
-      return (
-        !!this.$scopedSlots.actions && this.$scopedSlots.actions().length !== 0
-      );
+      return !!this.$slots.actions;
     },
     hasDropdownActions() {
-      return (
-        !!this.$scopedSlots["dropdown-actions"] &&
-        this.$scopedSlots["dropdown-actions"]().length !== 0
-      );
+      return !!this.$slots["dropdown-actions"];
     },
     hasClickListener() {
-      return this.$listeners && !!this.$listeners.clicked;
+      return !!this.$attrs.onClick;
     }
   },
   mounted() {
-    this.columns = this.$children.filter(c => c.$options.name === "Column");
     this.loadSizes();
     this.loadSort();
     if (this.hasDropdownActions) {
@@ -221,25 +225,31 @@ export default {
       this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
     },
     addErrors(key, errors) {
-      this.$set(this.errorColumns, key, errors);
+      this.errorColumns[key] = errors;
     },
     removeError(key) {
-      this.$set(this.errorColumns, key, null);
+      this.errorColumns[key] = null;
     },
     stopEdit(key) {
-      this.$set(this.editingColumns, key, false);
+      this.editingColumns[key] = false;
     },
     toggleEdit(key) {
-      this.$set(
-        this.editingColumns,
-        key,
-        Boolean(1 - (this.editingColumns[key] | 0))
-      );
+      this.editingColumns[key] = Boolean(1 - (this.editingColumns[key] | 0));
+    },
+    registerCell(el, index, columnId) {
+      if (el) {
+        this.cellComponents.push({ el, index, columnId });
+      }
+    },
+    registerColumn(el) {
+      if (el && !this.columns.includes(el)) {
+        this.columns.push(el);
+      }
     },
     editableCellsAtIndex(index) {
-      return this.$children.filter(
-        c => c.$options.name === "Cell" && c.index === index && c.editable
-      );
+      return this.cellComponents
+        .filter(c => c.el && c.index === index && c.el.editable)
+        .map(c => c.el);
     },
     saveChanges(index, key) {
       const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),

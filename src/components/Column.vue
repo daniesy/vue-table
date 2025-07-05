@@ -44,6 +44,7 @@
 <script>
 export default {
   name: "Column",
+  inject: ['table'],
   data: () => ({
     isResizing: false,
     isSorting: false,
@@ -116,6 +117,9 @@ export default {
   },
   mounted() {
     this.currentMax = this.max;
+    if (this.table) {
+      this.table.registerColumn(this);
+    }
   }
 };
 </script>
