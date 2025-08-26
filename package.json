@@ -1,6 +1,6 @@
 {
   "name": "@daniesy/vue-table",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "./dist/vue-table.common.js",
   "module": "./dist/vue-table.umd.js",
   "unpkg": "./dist/vue-table.umd.min.js",
