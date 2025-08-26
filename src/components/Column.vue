@@ -8,7 +8,7 @@
       hidden ? `table-column--hidden` : '',
       sortable ? `table-column--sortable` : '',
       resizable ? `table-column--resizable` : '',
-      isResizing ? 'table-column--resizing' : ''
+      isResizing ? 'table-column--resizing' : '',
     ]"
   >
     <div class="table-column-wrapper">
@@ -44,12 +44,12 @@
 <script>
 export default {
   name: "Column",
-  inject: ['table'],
+  inject: ["table"],
   data: () => ({
     isResizing: false,
     isSorting: false,
     isSortingDesc: false,
-    currentMax: ""
+    currentMax: "",
   }),
   props: {
     id: String,
@@ -60,12 +60,12 @@ export default {
     hidden: Boolean,
     min: {
       type: String,
-      default: "100px"
+      default: "100px",
     },
     max: {
       type: String,
-      default: "1fr"
-    }
+      default: "1fr",
+    },
   },
   computed: {
     _class() {
@@ -82,7 +82,7 @@ export default {
         return "fa-sort-down";
       }
       return "fa-sort-up";
-    }
+    },
   },
   methods: {
     sort() {
@@ -98,9 +98,9 @@ export default {
       const column = this.$el;
       requestAnimationFrame(() => {
         const horizontalScrollOffset = document.documentElement.scrollLeft;
-        this.currentMax = `${horizontalScrollOffset +
-          e.clientX -
-          column.offsetLeft}px`;
+        this.currentMax = `${
+          horizontalScrollOffset + e.clientX - column.offsetLeft
+        }px`;
         this.$parent.refreshSizes();
       });
     },
@@ -113,14 +113,14 @@ export default {
     resetSize() {
       this.currentMax = this.max;
       this.$parent.refreshSizes();
-    }
+    },
   },
   mounted() {
     this.currentMax = this.max;
     if (this.table) {
       this.table.registerColumn(this);
     }
-  }
+  },
 };
 </script>
 

@@ -1,4 +1,5 @@
-f<template>
+f
+<template>
   <div id="app">
     <v-table
       :data="items"
@@ -52,7 +53,7 @@ export default {
       if (!isDirty) {
         error({ last_name: "Nothing changed!" });
       } else {
-        values.forEach(item => {
+        values.forEach((item) => {
           set(this.items[index], item.key, item.value);
         });
         success();
@@ -85,7 +86,7 @@ export default {
     },
     clickedItem(event, item, index) {
       console.log("Clicked item", event, item, index);
-    }
+    },
   },
   data: () => ({
     items: [
@@ -98,8 +99,8 @@ export default {
         address: "8 Rieder Place",
         iban: "FR27 6552 4610 89H2 BHPF YVTZ E61",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 2,
@@ -110,8 +111,8 @@ export default {
         address: "2 8th Circle",
         iban: "EE12 8534 4088 6653 2021",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 3,
@@ -122,8 +123,8 @@ export default {
         address: "580 Arapahoe Parkway",
         iban: "FR85 9583 2048 93YI DAIA GVSX U06",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 4,
@@ -134,8 +135,8 @@ export default {
         address: "19 American Center",
         iban: "GE70 DT37 6963 8607 0176 39",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 5,
@@ -146,8 +147,8 @@ export default {
         address: "1 Sycamore Trail",
         iban: "MU50 UTQP 1304 8450 4625 8935 383R PR",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 6,
@@ -158,8 +159,8 @@ export default {
         address: "72172 Mifflin Plaza",
         iban: "SK24 7680 5909 5375 8687 4916",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 7,
@@ -170,8 +171,8 @@ export default {
         address: "04535 Kim Pass",
         iban: "FR50 3221 9772 68VC 9LZ5 J35O Y92",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 8,
@@ -182,8 +183,8 @@ export default {
         address: "42262 Havey Parkway",
         iban: "SE81 6425 3048 2790 2241 4175",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 9,
@@ -194,8 +195,8 @@ export default {
         address: "34682 Ridgeview Way",
         iban: "AZ19 TWKE TSJ2 OFWO R6YT DL2Y MZBU",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 10,
@@ -206,8 +207,8 @@ export default {
         address: "00 Shelley Point",
         iban: "CZ63 1886 3197 8748 8643 9175",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 11,
@@ -218,8 +219,8 @@ export default {
         address: "9 Prairieview Pass",
         iban: "HU05 3429 3366 5573 5750 1223 5278",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 12,
@@ -230,8 +231,8 @@ export default {
         address: "01 Tony Park",
         iban: "DO13 HPKR 2709 1723 3447 2835 0614",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 13,
@@ -242,8 +243,8 @@ export default {
         address: "508 Dakota Street",
         iban: "SE80 6194 7665 3836 4470 5403",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 14,
@@ -254,8 +255,8 @@ export default {
         address: "255 Myrtle Road",
         iban: "BG51 IHVG 1363 47AC RL6I RE",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 15,
@@ -266,8 +267,8 @@ export default {
         address: "26 Lake View Circle",
         iban: "GR54 4593 917V A6NZ FRLJ JAU0 XUI",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 16,
@@ -278,8 +279,8 @@ export default {
         address: "830 Kropf Terrace",
         iban: "RO62 FBRM FWXK ZZML L8OO QNCJ",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 17,
@@ -290,8 +291,8 @@ export default {
         address: "02 Sherman Way",
         iban: "VG80 ASDP 7286 0153 1642 1583",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 18,
@@ -302,8 +303,8 @@ export default {
         address: "9 Meadow Valley Way",
         iban: "IS26 2313 5532 6013 2030 1202 11",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 19,
@@ -314,8 +315,8 @@ export default {
         address: "82 Michigan Drive",
         iban: "NO86 0101 7099 267",
         nested: {
-          status: "ok"
-        }
+          status: "ok",
+        },
       },
       {
         id: 20,
@@ -326,11 +327,11 @@ export default {
         address: "19481 Nova Court",
         iban: "AT31 8530 8451 9377 7918",
         nested: {
-          status: "ok"
-        }
-      }
-    ]
-  })
+          status: "ok",
+        },
+      },
+    ],
+  }),
 };
 </script>
 

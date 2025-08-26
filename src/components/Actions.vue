@@ -55,7 +55,7 @@ export default {
     editMode: Boolean,
     cancelLabel: String,
     saveLabel: String,
-    actionClass: String
+    actionClass: String,
   },
   methods: {
     toggleEdit() {
@@ -66,8 +66,8 @@ export default {
     },
     handleCancel() {
       this.$parent.cancelChanges(this.index, this.id);
-    }
-  }
+    },
+  },
 };
 </script>
 

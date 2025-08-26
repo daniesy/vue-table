@@ -14,10 +14,10 @@ export default {
   props: {
     type: String,
     edit: Boolean,
-    tooltip: String
+    tooltip: String,
   },
   data: () => ({
-    actions: null
+    actions: null,
   }),
   methods: {
     clicked(e) {
@@ -32,11 +32,11 @@ export default {
         return parent;
       }
       return this.findActions(parent.$parent);
-    }
+    },
   },
   mounted() {
     this.actions = this.findActions(this.$parent);
-  }
+  },
 };
 </script>
 

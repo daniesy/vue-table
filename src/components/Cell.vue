@@ -5,7 +5,7 @@
       `table-cell--${id}`,
       isEditing ? 'table-cell--editing' : '',
       hasError ? 'table-cell--error' : '',
-      hoverIndex === index ? 'table-cell--hover' : ''
+      hoverIndex === index ? 'table-cell--hover' : '',
     ]"
     :title="value"
   >
@@ -28,7 +28,7 @@
 export default {
   name: "Cell",
   data: () => ({
-    newValue: ""
+    newValue: "",
   }),
   props: {
     item: Object,
@@ -41,7 +41,7 @@ export default {
     column: String,
     editable: Boolean,
     editMode: Boolean,
-    errors: Object
+    errors: Object,
   },
   computed: {
     value() {
@@ -58,7 +58,7 @@ export default {
     },
     hasError() {
       return !!this.err;
-    }
+    },
   },
   methods: {
     reset() {
@@ -68,16 +68,16 @@ export default {
       return {
         value: this.newValue,
         oldValue: this.value,
-        key: this.id
+        key: this.id,
       };
     },
     cancelEdit() {
       this.reset();
-    }
+    },
   },
   mounted() {
     this.reset();
-  }
+  },
 };
 </script>
 
@@ -110,7 +110,9 @@ export default {
     visibility: hidden;
     right: -5px;
     z-index: 10;
-    transition: right 0.4s ease-out, opacity 0.3s ease-out;
+    transition:
+      right 0.4s ease-out,
+      opacity 0.3s ease-out;
   }
   &.table-cell--editing {
     position: relative;
