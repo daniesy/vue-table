@@ -3,7 +3,7 @@
     class="table-cell table-dr-actions"
     :class="{
       'table-dr-actions--vertical': verticalActions,
-      'table-dr-actions--left': leftActions
+      'table-dr-actions--left': leftActions,
     }"
   >
     <div
@@ -50,12 +50,12 @@ export default {
     actionClass: String,
     verticalActions: Boolean,
     leftActions: Boolean,
-    activeIndex: Number
+    activeIndex: Number,
   },
   computed: {
     isVisible() {
       return this.index === this.activeIndex;
-    }
+    },
   },
   methods: {
     toggleEdit() {
@@ -66,8 +66,8 @@ export default {
     },
     toggle() {
       this.$emit("toggle", this.isVisible ? -1 : this.index);
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -8,7 +8,7 @@ const set = (target, path, value) => {
   }
 };
 
-const flattenObject = data => {
+const flattenObject = (data) => {
   let result = {};
   for (const key in data) {
     if (typeof data[key] == "object" && data[key] !== null) {
@@ -23,11 +23,11 @@ const flattenObject = data => {
   return result;
 };
 
-const unflattenObject = data => {
+const unflattenObject = (data) => {
   let result = {};
   for (const i in data) {
     let keys = i.split(".");
-    keys.reduce(function(r, e, j) {
+    keys.reduce(function (r, e, j) {
       return (
         r[e] ||
         (r[e] = isNaN(Number(keys[j + 1]))

@@ -8,7 +8,7 @@
       'vue-table--alternate': alternateRows,
       'vue-table--rowspacing': rowSpacing !== 0,
       'vue-table--hover': hoverShadow,
-      'vue-table--border': hasBorder
+      'vue-table--border': hasBorder,
     }"
     :style="style"
   >
@@ -30,9 +30,12 @@
         :key="item[trackBy]"
         @click="rowClicked($event, item, index)"
       >
-        <template v-for="(column, order) in columnsToDisplay" :key="`${item[trackBy]}${column.id}`">
+        <template
+          v-for="(column, order) in columnsToDisplay"
+          :key="`${item[trackBy]}${column.id}`"
+        >
           <cell
-            :ref="el => registerCell(el, index, column.id)"
+            :ref="(el) => registerCell(el, index, column.id)"
             :name="column.id"
             :id="column.id"
             :index="index"
@@ -109,30 +112,30 @@ export default {
     DropdownActions,
     Actions,
     Cell,
-    Column
+    Column,
   },
   props: {
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     saveLabel: {
       type: String,
-      default: "Save"
+      default: "Save",
     },
     cancelLabel: {
       type: String,
-      default: "Cancel"
+      default: "Cancel",
     },
     actionClass: String,
     wrap: Boolean,
     id: {
       type: String,
-      required: true
+      required: true,
     },
     trackBy: {
       type: String,
-      default: "id"
+      default: "id",
     },
     verticalAlign: Boolean,
     verticalActions: Boolean,
@@ -140,10 +143,10 @@ export default {
     alternateRows: Boolean,
     rowSpacing: {
       type: Number,
-      default: 0
+      default: 0,
     },
     hoverShadow: Boolean,
-    hasBorder: Boolean
+    hasBorder: Boolean,
   },
   data() {
     return {
@@ -154,29 +157,31 @@ export default {
       errorColumns: reactive({}),
       sortColumns: null,
       dropdownActiveIndex: -1,
-      cellComponents: []
+      cellComponents: [],
     };
   },
   provide() {
     return {
-      table: this
+      table: this,
     };
   },
   watch: {
     data: {
       deep: true,
-      handler: function(values) {
+      handler: function (values) {
         this.cellComponents = [];
-        this.flatData = values.map(d => flattenObject(d));
-      }
-    }
+        this.flatData = values.map((d) => flattenObject(d));
+      },
+    },
   },
   computed: {
     columnsToDisplay() {
-      return this.columns.filter(c => c.id);
+      return this.columns.filter((c) => c.id);
     },
     sizesStyle() {
-      const sizes = this.sizes.map(s => `minmax(${s.min}, ${s.max})`).join(" ");
+      const sizes = this.sizes
+        .map((s) => `minmax(${s.min}, ${s.max})`)
+        .join(" ");
       return `grid-template-columns: ${sizes}`;
     },
     rowsStyle() {
@@ -193,7 +198,7 @@ export default {
     },
     hasClickListener() {
       return !!this.$attrs.onClick;
-    }
+    },
   },
   mounted() {
     this.loadSizes();
@@ -201,7 +206,7 @@ export default {
     if (this.hasDropdownActions) {
       window.addEventListener("click", this.hideDropdown);
     }
-    this.flatData = this.data.map(d => flattenObject(d));
+    this.flatData = this.data.map((d) => flattenObject(d));
   },
   methods: {
     saveSizes() {
@@ -209,7 +214,7 @@ export default {
       this.$nextTick(() => {
         localStorage.setItem(
           `${this.id}-column-sizes`,
-          JSON.stringify(this.sizes)
+          JSON.stringify(this.sizes),
         );
       });
     },
@@ -222,7 +227,7 @@ export default {
       }
     },
     refreshSizes() {
-      this.sizes = this.columns.map(c => ({ min: c.min, max: c.currentMax }));
+      this.sizes = this.columns.map((c) => ({ min: c.min, max: c.currentMax }));
     },
     addErrors(key, errors) {
       this.errorColumns[key] = errors;
@@ -248,26 +253,27 @@ export default {
     },
     editableCellsAtIndex(index) {
       return this.cellComponents
-        .filter(c => c.el && c.index === index && c.el.editable)
-        .map(c => c.el);
+        .filter((c) => c.el && c.index === index && c.el.editable)
+        .map((c) => c.el);
     },
     saveChanges(index, key) {
-      const values = this.editableCellsAtIndex(index).map(c => c.saveEdit()),
+      const values = this.editableCellsAtIndex(index).map((c) => c.saveEdit()),
         packed = unflattenObject(
           values.reduce((carry, { key, value }) => {
             carry[key] = value;
             return carry;
-          }, {})
+          }, {}),
         ),
-        isDirty = values.filter(({ oldValue, value }) => oldValue !== value)
-          .length;
+        isDirty = values.filter(
+          ({ oldValue, value }) => oldValue !== value,
+        ).length;
 
       const success = () => {
         this.stopEdit(key);
         this.removeError(key);
       };
 
-      const error = errors => {
+      const error = (errors) => {
         this.addErrors(key, errors);
       };
 
@@ -275,16 +281,16 @@ export default {
         "update-item",
         { values, index, isDirty, packed },
         success,
-        error
+        error,
       );
     },
     cancelChanges(index, key) {
       this.stopEdit(key);
       this.removeError(key);
-      this.editableCellsAtIndex(index).forEach(c => c.cancelEdit());
+      this.editableCellsAtIndex(index).forEach((c) => c.cancelEdit());
     },
     sort(id, direction) {
-      this.columns.forEach(column => {
+      this.columns.forEach((column) => {
         if (column.id === id && column.sortable) {
           column.isSorting = true;
           column.isSortingDesc = direction === "desc";
@@ -321,8 +327,8 @@ export default {
     },
     hideDropdown() {
       this.dropdownActiveIndex = -1;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -403,7 +409,9 @@ table.vue-table {
       top: -15px;
       opacity: 0;
       visibility: hidden;
-      transition: 0.3s top ease-in-out, 0.3s opacity ease-in-out,
+      transition:
+        0.3s top ease-in-out,
+        0.3s opacity ease-in-out,
         0.3s visibility ease-in-out;
     }
     &::before {
@@ -501,8 +509,8 @@ table.vue-table {
       border-bottom: 1px solid #eaedf3;
     }
   }
- @media only screen and (max-width: 540px) {
-    grid-template-columns: 1fr !important
+  @media only screen and (max-width: 540px) {
+    grid-template-columns: 1fr !important;
   }
   @media only screen and (min-width: 540px) and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr) !important;
